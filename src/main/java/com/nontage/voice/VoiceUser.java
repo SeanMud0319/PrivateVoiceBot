@@ -63,9 +63,13 @@ public class VoiceUser {
     public void createChannel(String channelName) {
         Long categoryId = PrivateVoiceBot.config.getMap("privateVoiceCategoryId", Long.class, Long.class).get(this.guildId);
         if (categoryId != null) {
+            String fullChannelName = channelName + PrivateVoiceBot.config.getString("privateVoiceChannelSuffix");
+            if (fullChannelName.length() > 25) {
+                fullChannelName = fullChannelName.substring(0, 25);
+            }
             Objects.requireNonNull(Objects.requireNonNull(PrivateVoiceBot.jda.getGuildById(guildId))
                             .getCategoryById(categoryId))
-                    .createVoiceChannel(channelName + PrivateVoiceBot.config.getString("privateVoiceChannelSuffix"))
+                    .createVoiceChannel(fullChannelName)
                     .queue(voiceChannel -> {
                         VoiceChannel newChannel = new VoiceChannel(voiceChannel.getIdLong(), this, channelName);
                         manager.addChannel(guildId, newChannel);

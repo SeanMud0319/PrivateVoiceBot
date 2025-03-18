@@ -95,32 +95,37 @@ public class SimpleYaml {
     public <K, V> Map<K, V> getMap(String key, Class<K> keyClass, Class<V> valueClass) {
         String value = getString(key);
         Map<K, V> map = new HashMap<>();
-        if (!value.isEmpty()) {
+
+        if (value != null && !value.isEmpty()) {
             String[] pairs = value.split(",");
             for (String pair : pairs) {
-                String[] kv = pair.split(":");
-                if (kv.length == 2) {
-                    try {
-                        K mapKey = parseValue(kv[0].trim(), keyClass);
-                        V mapValue = parseValue(kv[1].trim(), valueClass);
-                        if (mapKey != null && mapValue != null) {
-                            map.put(mapKey, mapValue);
-                        }
-                    } catch (Exception ignored) {}
+                String[] kv = pair.split(":", 2);
+                if (kv.length != 2) continue;
+
+                K mapKey = parseValue(kv[0].trim(), keyClass);
+                V mapValue = parseValue(kv[1].trim(), valueClass);
+
+                if (mapKey != null && mapValue != null) {
+                    map.put(mapKey, mapValue);
                 }
             }
         }
         return map;
     }
 
-    public <K, V> void setMap(String key, Map<K, V> map) {
+    @SuppressWarnings("unchecked")
+    public <K, V> void setMap(String key, Map<K, V> newEntries) {
+        Map<K, V> existingMap = getMap(key, (Class<K>) newEntries.keySet().iterator().next().getClass(),
+                (Class<V>) newEntries.values().iterator().next().getClass());
+        existingMap.putAll(newEntries);
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<K, V> entry : map.entrySet()) {
+        for (Map.Entry<K, V> entry : existingMap.entrySet()) {
             sb.append(entry.getKey()).append(":").append(entry.getValue()).append(",");
         }
-        if (sb.length() > 0) sb.setLength(sb.length() - 1);
+        if (!sb.isEmpty()) sb.setLength(sb.length() - 1);
         set(key, sb.toString());
     }
+
 
     private <T> T parseValue(String value, Class<T> clazz) {
         try {

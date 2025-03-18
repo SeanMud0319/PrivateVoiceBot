@@ -88,6 +88,14 @@ public class VoiceChannel {
             System.err.println("Channel rename failed: Channel not found for ID " + channelId);
         }
     }
+    /**
+     * Sets the name of this channel class.
+     *
+     * @param name The new name of the channel.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
 
 
@@ -160,7 +168,11 @@ public class VoiceChannel {
      * @param manager The {@link VoiceGuildManager} managing this channel.
      */
     public void disable(VoiceGuildManager manager) {
-        manager.getDiscordVoiceChannelById(guildId, channelId).delete().queue();
+        try {
+            manager.getDiscordVoiceChannelById(guildId, channelId).delete().queue();
+        } catch (Exception e) {
+            System.err.println("Failed to delete channel: " + e.getMessage());
+        }
         manager.removeChannel(guildId, channelId);
     }
 }

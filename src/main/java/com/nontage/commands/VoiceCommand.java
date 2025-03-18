@@ -15,6 +15,8 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
 import java.awt.*;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -42,7 +44,6 @@ public class VoiceCommand extends SlashCommand {
                                 .addOption(OptionType.USER, "user", "指定用戶", true),
 
                         new SubcommandData(VoiceCommands.INFO.getName(), VoiceCommands.INFO.getDescription()),
-                        new SubcommandData(VoiceCommands.LIST.getName(), VoiceCommands.LIST.getDescription()),
                         new SubcommandData(VoiceCommands.TOGGLE_VISIBILITY.getName(), VoiceCommands.TOGGLE_VISIBILITY.getDescription()),
                         new SubcommandData(VoiceCommands.CLOSE.getName(), VoiceCommands.CLOSE.getDescription())
                 )
@@ -54,7 +55,6 @@ public class VoiceCommand extends SlashCommand {
         long guildId = Objects.requireNonNull(event.getGuild()).getIdLong();
         Optional<VoiceUser> senderUserOpt = manager.getUserById(guildId, sender.getIdLong());
         switch (VoiceCommands.fromName(subCommand)) {
-            //done (can add some msg like remember setup permission)
             case SET_CREATE_CHANNEL -> {
                 if (!sender.hasPermission(Permission.ADMINISTRATOR)) {
                     event.replyEmbeds(TextUtils.getNoPermissionEmbed().build()).setEphemeral(true).queue();
@@ -62,7 +62,11 @@ public class VoiceCommand extends SlashCommand {
                 }
                 try {
                     VoiceChannel channel = Objects.requireNonNull(event.getOption("channel")).getAsChannel().asVoiceChannel();
-                    channel.getManager().setUserLimit(1).setName(config.getString("privateVoiceChannelName")).queue();
+                    channel.getManager()
+                            .setUserLimit(1)
+                            .setName(config.getString("privateVoiceChannelName"))
+                            .putPermissionOverride(event.getGuild().getPublicRole(), List.of(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT), new HashSet<>())
+                            .queue();
                     long channelId = channel.getIdLong();
                     config.setMap("privateVoiceChannelId", Map.of(guildId, channelId));
                     config.save();
@@ -214,14 +218,17 @@ public class VoiceCommand extends SlashCommand {
                     event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(true).queue();
                 });
             }
-            //done (can add some name checks)
             case RENAME -> {
                 String newName = Objects.requireNonNull(event.getOption("name")).getAsString();
+                if (newName.length() > 25) {
+                    newName = newName.substring(0, 25);
+                }
+                String finalNewName = newName;
                 senderUserOpt.ifPresentOrElse(voiceUser -> {
                     if (noChannel(voiceUser, event)) {
                         return;
                     }
-                    voiceUser.getSelfVoiceChannel().rename(newName);
+                    voiceUser.getSelfVoiceChannel().rename(finalNewName);
                     event.replyEmbeds(TextUtils.getGlobalEmbed()
                             .setColor(Color.decode(config.getString("successColor")))
                             .setTitle(config.getString("successTitle"))
@@ -269,9 +276,6 @@ public class VoiceCommand extends SlashCommand {
                 }, () -> {
                     event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(true).queue();
                 });
-            }
-            case LIST -> {
-                //no
             }
             case TOGGLE_VISIBILITY -> {
                 senderUserOpt.ifPresentOrElse(voiceUser -> {
@@ -350,7 +354,6 @@ enum VoiceCommands {
     KICK("kick", "踢出頻道中的成員"),
     RENAME("rename", "重新命名你的頻道"),
     TRANSFER("transfer", "轉移頻道的所有權"),
-    LIST("list", "列出所有可進入的成員"),
     TOGGLE_VISIBILITY("togglevisibility", "切換頻道的可見性"),
     CLOSE("close", "關閉你的頻道");
 
