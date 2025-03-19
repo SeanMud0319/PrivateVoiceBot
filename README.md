@@ -10,8 +10,9 @@ PrivateVoiceBot is a Discord bot that allows users to create private voice chann
 ## Commands
 ### General Commands
 - `/about` - Get information about the bot, including the source code.
+- `/setup` - Get instructions on setting up the bot.
 
-### Voice Channel Commands
+### Voice Channel Commands (Admin Only)
 - `/voice setcreatechannel` - Set the channel where joining will create a private voice channel.
 - `/voice setcreatecategory` - Set the category where private voice channels will be created.
 
@@ -49,8 +50,9 @@ PrivateVoiceBot 是一款 Discord 機器人，允許用戶在伺服器中創建�
 ## 指令
 ### 一般指令
 - `/about` - 獲取機器人資訊，包括原始碼連結。
+- `/setup` - 獲取機器人設定教學。
 
-### 語音頻道指令
+### 語音頻道指令 (僅限管理員)
 - `/voice setcreatechannel` - 設置進入後會創建私人語音頻道的頻道。
 - `/voice setcreatecategory` - 設置私人語音頻道會創建在哪個類別。
 

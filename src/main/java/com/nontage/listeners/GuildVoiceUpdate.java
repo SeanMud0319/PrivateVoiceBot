@@ -24,7 +24,7 @@ public class GuildVoiceUpdate extends ListenerAdapter {
         voiceUser = optionalVoiceUser.orElseGet(() -> new VoiceUser(member, guild.getIdLong(), manager));
         var privateVoiceChannelMap = PrivateVoiceBot.config.getMap("privateVoiceChannelId", Long.class, Long.class);
         Long privateVoiceChannelId = privateVoiceChannelMap.get(guild.getIdLong());
-        if (event.getChannelJoined() != null && event.getChannelJoined().getIdLong() == privateVoiceChannelId) {
+        if (event.getChannelJoined() != null && privateVoiceChannelId != null && event.getChannelJoined().getIdLong() == privateVoiceChannelId) {
             if (voiceUser.getSelfVoiceChannel() != null) {
                 VoiceChannel channel = manager.getDiscordVoiceChannelById(guild.getIdLong(), voiceUser.getSelfVoiceChannel().getChannelId());
                 guild.moveVoiceMember(member, channel).queue();

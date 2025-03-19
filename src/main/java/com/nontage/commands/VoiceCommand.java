@@ -133,7 +133,7 @@ public class VoiceCommand extends SlashCommand {
                     int memberCount = discordChannel.getMembers().size();
                     //currently count +1 bcz owner is not in the list
                     event.replyEmbeds(TextUtils.getGlobalEmbed()
-                            .setColor(Color.CYAN)
+                            .setColor(Color.decode(config.getString("infoColor")))
                             .setTitle(sender.getEffectiveName() + " 的頻道資訊")
                             .setDescription("頻道名稱：` " + voiceUser.getSelfVoiceChannel().getName() + " `\n" +
                                     "頻道持有：" + voiceUser.getSelfVoiceChannel().getOwner().getMember().getAsMention() + "\n" +
@@ -357,17 +357,17 @@ public class VoiceCommand extends SlashCommand {
 
 enum VoiceCommands {
     // Administrator commands
-    SET_CREATE_CHANNEL("setcreatechannel", "將指定頻道設定為個人語音建立頻道"),
-    SET_CREATE_CATEGORY("setcreatecategory", "將指定類別設定為個人語音建立類別"),
+    SET_CREATE_CHANNEL("setcreatechannel", "將指定頻道設定為私人語音建立頻道"),
+    SET_CREATE_CATEGORY("setcreatecategory", "將指定類別設定為私人語音建立類別"),
     RELOAD("reload", "重新載入設置"),
     // User commands
-    INFO("info", "顯示個人語音頻道的資訊"),
-    INVITE("invite", "邀請他人加入您的個人語音頻道"),
-    KICK("kick", "踢出個人語音頻道中的成員"),
-    RENAME("rename", "重新命名您的個人語音頻道"),
-    TRANSFER("transfer", "轉移個人語音頻道的所有權"),
-    TOGGLE_VISIBILITY("togglevisibility", "切換個人語音頻道的可見性"),
-    CLOSE("close", "關閉您的個人語音頻道");
+    INFO("info", "顯示私人語音頻道的資訊"),
+    INVITE("invite", "邀請他人加入您的私人語音頻道"),
+    KICK("kick", "踢出私人語音頻道中的成員"),
+    RENAME("rename", "重新命名您的私人語音頻道"),
+    TRANSFER("transfer", "轉移私人語音頻道的所有權"),
+    TOGGLE_VISIBILITY("togglevisibility", "切換私人語音頻道的可見性"),
+    CLOSE("close", "關閉您的私人語音頻道");
 
     private final String name;
     private final String description;
