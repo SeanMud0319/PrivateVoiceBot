@@ -36,6 +36,56 @@ The built JAR file can be found in the `target/` directory.
 2. Assign the necessary permissions.
 3. Use the provided commands to configure private voice channels.
 
+## Configuration
+```
+token: <your-bot-token>
+# Your bot token. Do not share this token
+removeExceptionChannels: false
+# Whether to remove all channels in the create category after bot startup. Use with caution
+commandMessageEphemeral: false
+# Whether command replies are ephemeral. If true, only the command sender can see the reply
+privateVoiceCategoryId:
+# Map of create category IDs. Do not manually modify this setting
+privateVoiceChannelId:
+# Map of create channel IDs. Do not manually modify this setting
+privateVoiceChannelName: "點我建立私人頻道"
+noPermissionTitle: "您的權限不足！"
+noPermissionDescription: "您沒有權限執行此指令！"
+noPermissionColor: "#FF7A7A"
+noVoiceChannelColor: "#FF7A7A"
+noVoiceChannelTitle: "您需要先有一個私人語音頻道！"
+noVoiceChannelDescription: "請先建立一個私人語音頻道再執行此指令！"
+successColor: "#CFFFC0"
+errorColor: "#FF7A7A"
+successTitle: "成功！"
+errorTitle: "錯誤！"
+infoColor: "#7AD3FF"
+commandToBotError: "您無法對機器人執行該指令！"
+commandSelfError: "您無法對自己執行指令！"
+commandReloadSuccess: "成功重新載入設定！"
+commandSetCreateChannelSuccess: "成功設定私人語音建立頻道！"
+commandSetCreateChannelError: "設定私人語音建立頻道時發生錯誤，請確認您指定頻道是否為語音頻道！"
+commandSetCreateCategorySuccess: "成功設定私人語音建立分類！"
+commandSetCreateCategoryError: "設定私人語音建立分類時發生錯誤，請確認您指定類型是否為分類！"
+commandInviteSuccess: "已成功邀請使用者！"
+commandKickPublicError: "您只能在私人語音頻道踢出其他使用者！"
+commandKickNotInvitedError: "對方不在此私人語音頻道的邀請列表！"
+commandInviteAlreadyInvitedError: "對方已經在此私人語音頻道的邀請列表！"
+commandKickSuccess: "已成功踢出使用者！"
+commandRenameSuccess: "已成功更改私人語音頻道名稱！"
+commandTransferSelfError: "您已經是此私人語音頻道的擁有者！"
+commandTransferSuccess: "已成功轉移私人語音頻道之擁有權！"
+commandTransferTargetError: "對方已經擁有一個私人語音頻道！"
+commandToggleVisibilitySuccess: "已成功切換頻道私人語音可見性！"
+commandCloseSuccess: "已成功關閉頻道！"
+footer: "Made by Nontage"
+footerIcon: "https://cdn.discordapp.com/avatars/810170073239126066/98c4e35237d5ab7ff452e7dcd71e4a75.png?size=2048&quality=lossless"
+privateVoiceChannelPrefix: ""
+privateVoiceChannelSuffix: "的私人頻道"
+privateVoiceChannelTimeout: 300
+# Timeout for private voice channels in seconds
+```
+
 ---
 
 # PrivateVoiceBot （中文版）
@@ -75,6 +125,56 @@ mvn clean package
 1. 邀請機器人進入您的伺服器。
 2. 賦予必要的權限。
 3. 使用指令配置私人語音頻道。
+
+## 配置
+```
+token: <your-bot-token>
+# 您的機器人令牌。請勿分享此令牌
+removeExceptionChannels: false
+# 是否在機器人啟動後刪除所有在建立類別的頻道。請謹慎使用此選項
+commandMessageEphemeral: false 
+# 指令回覆是否為僅個人可見。若為 true，則僅指令發送者可見
+privateVoiceCategoryId:
+# 建立類別映射表。請勿手動修改此設定
+privateVoiceChannelId:
+# 建立頻道映射表。請勿手動修改此設定
+privateVoiceChannelName: "點我建立私人頻道"
+noPermissionTitle: "您的權限不足！"
+noPermissionDescription: "您沒有權限執行此指令！"
+noPermissionColor: "#FF7A7A"
+noVoiceChannelColor: "#FF7A7A"
+noVoiceChannelTitle: "您需要先有一個私人語音頻道！"
+noVoiceChannelDescription: "請先建立一個私人語音頻道再執行此指令！"
+successColor: "#CFFFC0"
+errorColor: "#FF7A7A"
+successTitle: "成功！"
+errorTitle: "錯誤！"
+infoColor: "#7AD3FF"
+commandToBotError: "您無法對機器人執行該指令！"
+commandSelfError: "您無法對自己執行指令！"
+commandReloadSuccess: "成功重新載入設定！"
+commandSetCreateChannelSuccess: "成功設定私人語音建立頻道！"
+commandSetCreateChannelError: "設定私人語音建立頻道時發生錯誤，請確認您指定頻道是否為語音頻道！"
+commandSetCreateCategorySuccess: "成功設定私人語音建立分類！"
+commandSetCreateCategoryError: "設定私人語音建立分類時發生錯誤，請確認您指定類型是否為分類！"
+commandInviteSuccess: "已成功邀請使用者！"
+commandKickPublicError: "您只能在私人語音頻道踢出其他使用者！"
+commandKickNotInvitedError: "對方不在此私人語音頻道的邀請列表！"
+commandInviteAlreadyInvitedError: "對方已經在此私人語音頻道的邀請列表！"
+commandKickSuccess: "已成功踢出使用者！"
+commandRenameSuccess: "已成功更改私人語音頻道名稱！"
+commandTransferSelfError: "您已經是此私人語音頻道的擁有者！"
+commandTransferSuccess: "已成功轉移私人語音頻道之擁有權！"
+commandTransferTargetError: "對方已經擁有一個私人語音頻道！"
+commandToggleVisibilitySuccess: "已成功切換頻道私人語音可見性！"
+commandCloseSuccess: "已成功關閉頻道！"
+footer: "Made by Nontage"
+footerIcon: "https://cdn.discordapp.com/avatars/810170073239126066/98c4e35237d5ab7ff452e7dcd71e4a75.png?size=2048&quality=lossless"
+privateVoiceChannelPrefix: ""
+privateVoiceChannelSuffix: "的私人頻道"
+privateVoiceChannelTimeout: 300
+# 私人語音頻道空閒超時時間（秒）
+```
 
 Enjoy using PrivateVoiceBot!
 
