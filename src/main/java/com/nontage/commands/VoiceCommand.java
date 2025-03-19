@@ -56,7 +56,7 @@ public class VoiceCommand extends SlashCommand {
         switch (VoiceCommands.fromName(subCommand)) {
             case RELOAD -> {
                 if (!sender.hasPermission(Permission.ADMINISTRATOR)) {
-                    event.replyEmbeds(TextUtils.getNoPermissionEmbed().build()).setEphemeral(true).queue();
+                    event.replyEmbeds(TextUtils.getNoPermissionEmbed().build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                     return;
                 }
                 config.reload();
@@ -64,11 +64,11 @@ public class VoiceCommand extends SlashCommand {
                         .setColor(Color.decode(config.getString("successColor")))
                         .setTitle(config.getString("successTitle"))
                         .setDescription(config.getString("commandReloadSuccess"))
-                        .build()).setEphemeral(true).queue();
+                        .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
             }
             case SET_CREATE_CHANNEL -> {
                 if (!sender.hasPermission(Permission.ADMINISTRATOR)) {
-                    event.replyEmbeds(TextUtils.getNoPermissionEmbed().build()).setEphemeral(true).queue();
+                    event.replyEmbeds(TextUtils.getNoPermissionEmbed().build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                     return;
                 }
                 try {
@@ -86,18 +86,18 @@ public class VoiceCommand extends SlashCommand {
                             .setColor(Color.decode(config.getString("successColor")))
                             .setTitle(config.getString("successTitle"))
                             .setDescription(config.getString("commandSetCreateChannelSuccess"))
-                            .build()).setEphemeral(true).queue();
+                            .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 } catch (Exception e) {
                     event.replyEmbeds(TextUtils.getGlobalEmbed()
                             .setColor(Color.decode(config.getString("errorColor")))
                             .setTitle(config.getString("errorTitle"))
                             .setDescription(config.getString("commandSetCreateChannelError"))
-                            .build()).setEphemeral(true).queue();
+                            .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 }
             }
             case SET_CREATE_CATEGORY -> {
                 if (!sender.hasPermission(Permission.ADMINISTRATOR)) {
-                    event.replyEmbeds(TextUtils.getNoPermissionEmbed().build()).setEphemeral(true).queue();
+                    event.replyEmbeds(TextUtils.getNoPermissionEmbed().build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                     return;
                 }
                 try {
@@ -115,13 +115,13 @@ public class VoiceCommand extends SlashCommand {
                             .setColor(Color.decode(config.getString("successColor")))
                             .setTitle(config.getString("successTitle"))
                             .setDescription(config.getString("commandSetCreateCategorySuccess"))
-                            .build()).setEphemeral(true).queue();
+                            .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 } catch (Exception e) {
                     event.replyEmbeds(TextUtils.getGlobalEmbed()
                             .setColor(Color.decode(config.getString("errorColor")))
                             .setTitle(config.getString("errorTitle"))
                             .setDescription(config.getString("commandSetCreateCategoryError"))
-                            .build()).setEphemeral(true).queue();
+                            .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 }
             }
             case INFO -> {
@@ -134,17 +134,17 @@ public class VoiceCommand extends SlashCommand {
                     //currently count +1 bcz owner is not in the list
                     event.replyEmbeds(TextUtils.getGlobalEmbed()
                             .setColor(Color.CYAN)
-                            .setTitle(sender.getEffectiveName() + "的頻道資訊")
-                            .setDescription("頻道名稱: " + voiceUser.getSelfVoiceChannel().getName() + "\n" +
-                                    "頻道所有者: " + voiceUser.getSelfVoiceChannel().getOwner().getMember().getAsMention() + "\n" +
-                                    "頻道類型: " + (voiceUser.getSelfVoiceChannel().isPrivate() ? "私人" : "公開") + "\n" +
-                                    "當前人數: " + (memberCount + "/" + (voiceUser.getSelfVoiceChannel().isPrivate() ? (voiceUser.getSelfVoiceChannel().getInvitedUsers().size() + 1) : "")) + "\n" +
-                                    "邀請列表: " + voiceUser.getSelfVoiceChannel().getInvitedUsers().stream()
+                            .setTitle(sender.getEffectiveName() + " 的頻道資訊")
+                            .setDescription("頻道名稱：` " + voiceUser.getSelfVoiceChannel().getName() + " `\n" +
+                                    "頻道持有：" + voiceUser.getSelfVoiceChannel().getOwner().getMember().getAsMention() + "\n" +
+                                    "頻道類型：` " + (voiceUser.getSelfVoiceChannel().isPrivate() ? "私人" : "公開") + " `\n" +
+                                    "當前人數：` " + memberCount + "／" + (voiceUser.getSelfVoiceChannel().isPrivate() ? (voiceUser.getSelfVoiceChannel().getInvitedUsers().size() + 1) : "∞") + " `\n" +
+                                    "邀請列表：" + voiceUser.getSelfVoiceChannel().getInvitedUsers().stream()
                                     .map(user -> user.getMember().getAsMention())
-                                    .reduce((a, b) -> a + ", " + b).orElse("無"))
-                            .build()).setEphemeral(true).queue();
+                                    .reduce((a, b) -> a + "、" + b).orElse("` 無 `"))
+                            .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 }, () -> {
-                    event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(true).queue();
+                    event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 });
             }
             case INVITE -> {
@@ -165,7 +165,7 @@ public class VoiceCommand extends SlashCommand {
                                 .setColor(Color.decode(config.getString("errorColor")))
                                 .setTitle(config.getString("errorTitle"))
                                 .setDescription(config.getString("commandInviteAlreadyInvitedError"))
-                                .build()).setEphemeral(true).queue();
+                                .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                         return;
                     }
                     targetUserOpt.ifPresentOrElse(targetUser -> {
@@ -174,7 +174,7 @@ public class VoiceCommand extends SlashCommand {
                                         .setColor(Color.decode(config.getString("successColor")))
                                         .setTitle(config.getString("successTitle"))
                                         .setDescription(config.getString("commandInviteSuccess"))
-                                        .build()).setEphemeral(true).queue();
+                                        .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                             }
                             , () -> {
                                 voiceUser.getSelfVoiceChannel().inviteUser(new VoiceUser(Objects.requireNonNull(event.getGuild().getMember(target)), guildId, manager));
@@ -182,10 +182,10 @@ public class VoiceCommand extends SlashCommand {
                                         .setColor(Color.decode(config.getString("successColor")))
                                         .setTitle(config.getString("successTitle"))
                                         .setDescription(config.getString("commandInviteSuccess"))
-                                        .build()).setEphemeral(true).queue();
+                                        .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                             });
                 }, () -> {
-                    event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(true).queue();
+                    event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 });
             }
             case KICK -> {
@@ -202,7 +202,7 @@ public class VoiceCommand extends SlashCommand {
                                 .setColor(Color.decode(config.getString("errorColor")))
                                 .setTitle(config.getString("errorTitle"))
                                 .setDescription(config.getString("commandKickPublicError"))
-                                .build()).setEphemeral(true).queue();
+                                .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                         return;
                     }
                     if (senderIsTarget(sender.getIdLong(), target.getIdLong(), event)) {
@@ -214,7 +214,7 @@ public class VoiceCommand extends SlashCommand {
                                 .setColor(Color.decode(config.getString("errorColor")))
                                 .setTitle(config.getString("errorTitle"))
                                 .setDescription(config.getString("commandKickNotInvitedError"))
-                                .build()).setEphemeral(true).queue();
+                                .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                         return;
                     }
                     targetUserOpt.ifPresent(targetUser -> {
@@ -223,10 +223,10 @@ public class VoiceCommand extends SlashCommand {
                                 .setColor(Color.decode(config.getString("successColor")))
                                 .setTitle(config.getString("successTitle"))
                                 .setDescription(config.getString("commandKickSuccess"))
-                                .build()).setEphemeral(true).queue();
+                                .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                     });
                 }, () -> {
-                    event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(true).queue();
+                    event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 });
             }
             case RENAME -> {
@@ -244,9 +244,9 @@ public class VoiceCommand extends SlashCommand {
                             .setColor(Color.decode(config.getString("successColor")))
                             .setTitle(config.getString("successTitle"))
                             .setDescription(config.getString("commandRenameSuccess"))
-                            .build()).setEphemeral(true).queue();
+                            .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 }, () -> {
-                    event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(true).queue();
+                    event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 });
             }
             case TRANSFER -> {
@@ -267,7 +267,7 @@ public class VoiceCommand extends SlashCommand {
                                     .setColor(Color.decode(config.getString("errorColor")))
                                     .setTitle(config.getString("errorTitle"))
                                     .setDescription(config.getString("commandTransferTargetError"))
-                                    .build()).setEphemeral(true).queue();
+                                    .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                             return;
                         }
                         voiceUser.getSelfVoiceChannel().transferOwner(targetUser);
@@ -275,17 +275,17 @@ public class VoiceCommand extends SlashCommand {
                                 .setColor(Color.decode(config.getString("successColor")))
                                 .setTitle(config.getString("successTitle"))
                                 .setDescription(config.getString("commandTransferSuccess"))
-                                .build()).setEphemeral(true).queue();
+                                .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                     }, () -> {
                         voiceUser.getSelfVoiceChannel().transferOwner(new VoiceUser(Objects.requireNonNull(event.getGuild().getMember(target)), guildId, manager));
                         event.replyEmbeds(TextUtils.getGlobalEmbed()
                                 .setColor(Color.decode(config.getString("successColor")))
                                 .setTitle(config.getString("successTitle"))
                                 .setDescription(config.getString("commandTransferSuccess"))
-                                .build()).setEphemeral(true).queue();
+                                .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                     });
                 }, () -> {
-                    event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(true).queue();
+                    event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 });
             }
             case TOGGLE_VISIBILITY -> {
@@ -298,9 +298,9 @@ public class VoiceCommand extends SlashCommand {
                             .setColor(Color.decode(config.getString("successColor")))
                             .setTitle(config.getString("successTitle"))
                             .setDescription(config.getString("commandToggleVisibilitySuccess"))
-                            .build()).setEphemeral(true).queue();
+                            .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 }, () -> {
-                    event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(true).queue();
+                    event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 });
             }
             case CLOSE -> {
@@ -314,9 +314,9 @@ public class VoiceCommand extends SlashCommand {
                             .setColor(Color.decode(config.getString("successColor")))
                             .setTitle(config.getString("successTitle"))
                             .setDescription(config.getString("commandCloseSuccess"))
-                            .build()).setEphemeral(true).queue();
+                            .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 }, () -> {
-                    event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(true).queue();
+                    event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 });
             }
         }
@@ -328,7 +328,7 @@ public class VoiceCommand extends SlashCommand {
                     .setColor(Color.decode(config.getString("errorColor")))
                     .setTitle(config.getString("errorTitle"))
                     .setDescription(config.getString("commandToBotError"))
-                    .build()).setEphemeral(true).queue();
+                    .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
             return true;
         }
         return false;
@@ -336,7 +336,7 @@ public class VoiceCommand extends SlashCommand {
 
     private static boolean noChannel(VoiceUser voiceUser, SlashCommandInteractionEvent event) {
         if (voiceUser.getSelfVoiceChannel() == null) {
-            event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(true).queue();
+            event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
             return true;
         }
         return false;
@@ -348,7 +348,7 @@ public class VoiceCommand extends SlashCommand {
                     .setColor(Color.decode(config.getString("errorColor")))
                     .setTitle(config.getString("errorTitle"))
                     .setDescription(config.getString("commandSelfError"))
-                    .build()).setEphemeral(true).queue();
+                    .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
             return true;
         }
         return false;

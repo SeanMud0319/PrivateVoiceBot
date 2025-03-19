@@ -1,6 +1,6 @@
 token: <your-bot-token>
 removeExceptionChannels: false
-commandMessageEphemeral:
+commandMessageEphemeral: false
 privateVoiceCategoryId:
 privateVoiceChannelId:
 privateVoiceChannelName: "點我建立私人頻道"
@@ -10,8 +10,8 @@ noPermissionColor: "#FF7A7A"
 noVoiceChannelColor: "#FF7A7A"
 noVoiceChannelTitle: "您需要有一個語音頻道！"
 noVoiceChannelDescription: "請先建立一個語音頻道再執行此指令！"
-successColor: "#CFFFC0"
-errorColor: "#FF7A7A"
+successColor: "#008000"
+errorColor: "#AA0000"
 successTitle: "成功！"
 errorTitle: "錯誤！"
 commandToBotError: "您無法對機器人執行指令！"

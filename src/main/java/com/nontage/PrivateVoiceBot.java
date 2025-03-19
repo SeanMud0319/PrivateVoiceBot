@@ -1,6 +1,7 @@
 package com.nontage;
 
 import com.nontage.commands.AboutCommand;
+import com.nontage.commands.SetUpCommand;
 import com.nontage.commands.VoiceCommand;
 import com.nontage.listeners.ChannelDelete;
 import com.nontage.listeners.ChannelUpdateName;
@@ -37,7 +38,7 @@ public class PrivateVoiceBot {
             voiceTimer.start();
             jda.awaitReady();
             System.out.println("JDA Loaded!");
-            SlashCommand.register(new VoiceCommand(), new AboutCommand());
+            SlashCommand.register(new VoiceCommand(), new AboutCommand(), new SetUpCommand());
             jda.getGuilds().forEach(guild -> {
                 manager.removeExceptionChannel(guild.getIdLong());
             });
