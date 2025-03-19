@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
+import static com.nontage.PrivateVoiceBot.config;
+
 /**
  * Represents a user in a Discord-like server.
  * Each user has a unique ID, a username, and belongs to a specific guild (server).
@@ -61,9 +63,9 @@ public class VoiceUser {
      * @param channelName The name of the new channel.
      */
     public void createChannel(String channelName) {
-        Long categoryId = PrivateVoiceBot.config.getMap("privateVoiceCategoryId", Long.class, Long.class).get(this.guildId);
+        Long categoryId = config.getMap("privateVoiceCategoryId", Long.class, Long.class).get(this.guildId);
         if (categoryId != null) {
-            String fullChannelName = channelName + PrivateVoiceBot.config.getString("privateVoiceChannelSuffix");
+            String fullChannelName = config.getString("privateVoiceChannelPrefix") + channelName + config.getString("privateVoiceChannelSuffix");
             if (fullChannelName.length() > 25) {
                 fullChannelName = fullChannelName.substring(0, 25);
             }

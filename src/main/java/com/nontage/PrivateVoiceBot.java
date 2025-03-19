@@ -33,14 +33,14 @@ public class PrivateVoiceBot {
                     .build();
             System.out.println("Initiation JDA...");
             manager = new VoiceGuildManager();
+            voiceTimer = new VoiceTimer();
+            voiceTimer.start();
             jda.awaitReady();
             System.out.println("JDA Loaded!");
             SlashCommand.register(new VoiceCommand(), new AboutCommand());
             jda.getGuilds().forEach(guild -> {
                 manager.removeExceptionChannel(guild.getIdLong());
             });
-            voiceTimer = new VoiceTimer();
-            voiceTimer.start();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("If the exception is not associated with config, please ignore this message.");

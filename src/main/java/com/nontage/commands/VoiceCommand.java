@@ -23,7 +23,6 @@ import java.util.Optional;
 
 import static com.nontage.PrivateVoiceBot.*;
 
-//TODO ALL METHODS NEED TO CHECK, EXPECT ADMIN COMMANDS
 public class VoiceCommand extends SlashCommand {
     public VoiceCommand() {
         super(Commands.slash("voice", "語音指令")
@@ -34,13 +33,13 @@ public class VoiceCommand extends SlashCommand {
                                 .addOption(OptionType.CHANNEL, "category", "指定類別", true),
 
                         new SubcommandData(VoiceCommands.INVITE.getName(), VoiceCommands.INVITE.getDescription())
-                                .addOption(OptionType.USER, "user", "指定用戶", true),
+                                .addOption(OptionType.USER, "user", "指定使用者", true),
                         new SubcommandData(VoiceCommands.KICK.getName(), VoiceCommands.KICK.getDescription())
-                                .addOption(OptionType.USER, "user", "指定用戶", true),
+                                .addOption(OptionType.USER, "user", "指定使用者", true),
                         new SubcommandData(VoiceCommands.RENAME.getName(), VoiceCommands.RENAME.getDescription())
                                 .addOption(OptionType.STRING, "name", "新名稱", true),
                         new SubcommandData(VoiceCommands.TRANSFER.getName(), VoiceCommands.TRANSFER.getDescription())
-                                .addOption(OptionType.USER, "user", "指定用戶", true),
+                                .addOption(OptionType.USER, "user", "指定使用者", true),
 
                         new SubcommandData(VoiceCommands.RELOAD.getName(), VoiceCommands.RELOAD.getDescription()),
                         new SubcommandData(VoiceCommands.INFO.getName(), VoiceCommands.INFO.getDescription()),
@@ -139,7 +138,7 @@ public class VoiceCommand extends SlashCommand {
                             .setDescription("頻道名稱: " + voiceUser.getSelfVoiceChannel().getName() + "\n" +
                                     "頻道所有者: " + voiceUser.getSelfVoiceChannel().getOwner().getMember().getAsMention() + "\n" +
                                     "頻道類型: " + (voiceUser.getSelfVoiceChannel().isPrivate() ? "私人" : "公開") + "\n" +
-                                    "當前人數: " + (memberCount + "/" + (voiceUser.getSelfVoiceChannel().getInvitedUsers().size() + 1)) + "\n" +
+                                    "當前人數: " + (memberCount + "/" + (voiceUser.getSelfVoiceChannel().isPrivate() ? (voiceUser.getSelfVoiceChannel().getInvitedUsers().size() + 1) : "")) + "\n" +
                                     "邀請列表: " + voiceUser.getSelfVoiceChannel().getInvitedUsers().stream()
                                     .map(user -> user.getMember().getAsMention())
                                     .reduce((a, b) -> a + ", " + b).orElse("無"))
@@ -358,17 +357,17 @@ public class VoiceCommand extends SlashCommand {
 
 enum VoiceCommands {
     // Administrator commands
-    SET_CREATE_CHANNEL("setcreatechannel", "將指定頻道設為創建頻道"),
-    SET_CREATE_CATEGORY("setcreatecategory", "將指定類別設為創建類別"),
-    RELOAD("reload", "重新加載設置"),
+    SET_CREATE_CHANNEL("setcreatechannel", "將指定頻道設定為個人語音建立頻道"),
+    SET_CREATE_CATEGORY("setcreatecategory", "將指定類別設定為個人語音建立類別"),
+    RELOAD("reload", "重新載入設置"),
     // User commands
-    INFO("info", "顯示頻道的資訊"),
-    INVITE("invite", "邀請他人加入你的頻道"),
-    KICK("kick", "踢出頻道中的成員"),
-    RENAME("rename", "重新命名你的頻道"),
-    TRANSFER("transfer", "轉移頻道的所有權"),
-    TOGGLE_VISIBILITY("togglevisibility", "切換頻道的可見性"),
-    CLOSE("close", "關閉你的頻道");
+    INFO("info", "顯示個人語音頻道的資訊"),
+    INVITE("invite", "邀請他人加入您的個人語音頻道"),
+    KICK("kick", "踢出個人語音頻道中的成員"),
+    RENAME("rename", "重新命名您的個人語音頻道"),
+    TRANSFER("transfer", "轉移個人語音頻道的所有權"),
+    TOGGLE_VISIBILITY("togglevisibility", "切換個人語音頻道的可見性"),
+    CLOSE("close", "關閉您的個人語音頻道");
 
     private final String name;
     private final String description;

@@ -148,7 +148,6 @@ public class VoiceChannel {
         var discordChannel = manager.getDiscordVoiceChannelById(guildId, channelId);
         if (discordChannel == null) return;
         discordChannel.getManager().removePermissionOverride(user.getUserId()).queue();
-
         Member member = user.getMember();
         if (member != null && member.getVoiceState() != null) {
             var voiceState = member.getVoiceState();
