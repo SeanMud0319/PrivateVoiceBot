@@ -119,18 +119,31 @@ public class VoiceGuildManager {
     }
 
     public void removeExceptionChannel(long guildId) {
-        Long categoryId = config.getMap("privateVoiceCategoryId", Long.class, Long.class).get(guildId);
-        if (categoryId != null) {
-            Objects.requireNonNull(Objects.requireNonNull(PrivateVoiceBot.jda.getGuildById(guildId))
-                            .getCategoryById(categoryId))
-                    .getChannels()
-                    .forEach(channel -> {
-                        if (!config.getMap("privateVoiceChannelId", Long.class, Long.class).containsValue(channel.getIdLong())) {
-                            channel.delete().queue();
-                            System.out.println("Removed exception channel: " + channel.getName());
-                        }
-                    });
+        try {
+            Long categoryId = config.getMap("privateVoiceCategoryId", Long.class, Long.class).get(guildId);
+            if (categoryId == null) {
+                return;
+            }
+            var guild = PrivateVoiceBot.jda.getGuildById(guildId);
+            if (guild == null) {
+                return;
+            }
+            var category = guild.getCategoryById(categoryId);
+            if (category == null) {
+                return;
+            }
+            category.getChannels().forEach(channel -> {
+                try {
+                    if (!config.getMap("privateVoiceChannelId", Long.class, Long.class).containsValue(channel.getIdLong())) {
+                        channel.delete().queue();
+                        System.out.println("Removed exception channel: " + channel.getName());
+                    }
+                } catch (Exception e) {
+                    System.err.println("Failed to remove channel: " + channel.getId());
+                }
+            });
+        } catch (Exception e) {
+            System.err.println("Error processing guild ID: " + guildId);
         }
     }
-
 }

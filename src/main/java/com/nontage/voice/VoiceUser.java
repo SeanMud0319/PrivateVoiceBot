@@ -71,7 +71,7 @@ public class VoiceUser {
                             .getCategoryById(categoryId))
                     .createVoiceChannel(fullChannelName)
                     .queue(voiceChannel -> {
-                        VoiceChannel newChannel = new VoiceChannel(voiceChannel.getIdLong(), this, channelName);
+                        VoiceChannel newChannel = new VoiceChannel(voiceChannel.getIdLong(), this, channelName, voiceChannel);
                         manager.addChannel(guildId, newChannel);
                         voiceChannel.getGuild().moveVoiceMember(this.member, voiceChannel).queue();
                         voiceChannel.getManager()

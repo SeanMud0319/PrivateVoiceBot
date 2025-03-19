@@ -21,8 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.nontage.PrivateVoiceBot.config;
-import static com.nontage.PrivateVoiceBot.manager;
+import static com.nontage.PrivateVoiceBot.*;
 
 //TODO ALL METHODS NEED TO CHECK, EXPECT ADMIN COMMANDS
 public class VoiceCommand extends SlashCommand {
@@ -43,6 +42,7 @@ public class VoiceCommand extends SlashCommand {
                         new SubcommandData(VoiceCommands.TRANSFER.getName(), VoiceCommands.TRANSFER.getDescription())
                                 .addOption(OptionType.USER, "user", "指定用戶", true),
 
+                        new SubcommandData(VoiceCommands.RELOAD.getName(), VoiceCommands.RELOAD.getDescription()),
                         new SubcommandData(VoiceCommands.INFO.getName(), VoiceCommands.INFO.getDescription()),
                         new SubcommandData(VoiceCommands.TOGGLE_VISIBILITY.getName(), VoiceCommands.TOGGLE_VISIBILITY.getDescription()),
                         new SubcommandData(VoiceCommands.CLOSE.getName(), VoiceCommands.CLOSE.getDescription())
@@ -55,6 +55,18 @@ public class VoiceCommand extends SlashCommand {
         long guildId = Objects.requireNonNull(event.getGuild()).getIdLong();
         Optional<VoiceUser> senderUserOpt = manager.getUserById(guildId, sender.getIdLong());
         switch (VoiceCommands.fromName(subCommand)) {
+            case RELOAD -> {
+                if (!sender.hasPermission(Permission.ADMINISTRATOR)) {
+                    event.replyEmbeds(TextUtils.getNoPermissionEmbed().build()).setEphemeral(true).queue();
+                    return;
+                }
+                config.reload();
+                event.replyEmbeds(TextUtils.getGlobalEmbed()
+                        .setColor(Color.decode(config.getString("successColor")))
+                        .setTitle(config.getString("successTitle"))
+                        .setDescription(config.getString("commandReloadSuccess"))
+                        .build()).setEphemeral(true).queue();
+            }
             case SET_CREATE_CHANNEL -> {
                 if (!sender.hasPermission(Permission.ADMINISTRATOR)) {
                     event.replyEmbeds(TextUtils.getNoPermissionEmbed().build()).setEphemeral(true).queue();
@@ -348,6 +360,7 @@ enum VoiceCommands {
     // Administrator commands
     SET_CREATE_CHANNEL("setcreatechannel", "將指定頻道設為創建頻道"),
     SET_CREATE_CATEGORY("setcreatecategory", "將指定類別設為創建類別"),
+    RELOAD("reload", "重新加載設置"),
     // User commands
     INFO("info", "顯示頻道的資訊"),
     INVITE("invite", "邀請他人加入你的頻道"),

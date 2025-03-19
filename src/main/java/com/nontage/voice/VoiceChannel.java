@@ -6,11 +6,11 @@ import net.dv8tion.jda.api.managers.channel.concrete.VoiceChannelManager;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import static com.nontage.PrivateVoiceBot.jda;
 import static com.nontage.PrivateVoiceBot.manager;
+import static com.nontage.PrivateVoiceBot.voiceTimer;
 
 /**
  * Represents a voice channel in a Discord-like server.
@@ -20,25 +20,29 @@ import static com.nontage.PrivateVoiceBot.manager;
 public class VoiceChannel {
     private final long channelId;
     private final long guildId;
-    private VoiceUser owner;
     private final Set<VoiceUser> invitedUsers;
+    private final net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel discordChannel;
     private boolean isPrivate;
     private String name;
+    private VoiceUser owner;
 
     /**
-     * Creates a new voice channel.
+     * Creates a new public voice channel.
      *
-     * @param channelId The unique ID of the channel.
-     * @param owner     The owner of the channel.
-     * @param name      The name of the channel.
+     * @param channelId      The unique ID of the channel.
+     * @param owner          The owner of the channel.
+     * @param name           The name of the channel.
+     * @param discordChannel The Discord {@link net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel} object representing this channel.
      */
-    public VoiceChannel(long channelId, VoiceUser owner, String name) {
+    public VoiceChannel(long channelId, VoiceUser owner, String name, net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel discordChannel) {
         this.channelId = channelId;
         this.guildId = owner.getGuildId();
         this.owner = owner;
         this.name = name;
+        this.discordChannel = discordChannel;
         this.isPrivate = true;
         this.invitedUsers = new HashSet<>();
+        voiceTimer.addChannel(guildId, this);
     }
 
     /**
@@ -88,6 +92,7 @@ public class VoiceChannel {
             System.err.println("Channel rename failed: Channel not found for ID " + channelId);
         }
     }
+
     /**
      * Sets the name of this channel class.
      *
@@ -96,7 +101,6 @@ public class VoiceChannel {
     public void setName(String name) {
         this.name = name;
     }
-
 
 
     /**
@@ -163,6 +167,13 @@ public class VoiceChannel {
     }
 
     /**
+     * @return The Discord {@link net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel} object representing this channel.
+     */
+    public net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel getDiscordChannel() {
+        return discordChannel;
+    }
+
+    /**
      * Disables this channel and removes it from the manager.
      *
      * @param manager The {@link VoiceGuildManager} managing this channel.
@@ -172,7 +183,9 @@ public class VoiceChannel {
             manager.getDiscordVoiceChannelById(guildId, channelId).delete().queue();
         } catch (Exception e) {
             System.err.println("Failed to delete channel: " + e.getMessage());
+            System.out.println("If you manually delete the channel, please ignore this message.");
         }
+        voiceTimer.removeChannel(guildId, channelId);
         manager.removeChannel(guildId, channelId);
     }
 }

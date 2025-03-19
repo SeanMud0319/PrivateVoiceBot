@@ -8,6 +8,11 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
 import java.awt.*;
 
+/**
+ * I hope you won't delete this,
+ * but if you do, I won't stop you.
+ */
+
 public class AboutCommand extends SlashCommand {
     public AboutCommand() {
         super(Commands.slash("about", "Get information about the bot."));

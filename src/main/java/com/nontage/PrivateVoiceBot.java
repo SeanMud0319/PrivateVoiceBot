@@ -8,6 +8,7 @@ import com.nontage.listeners.GuildVoiceUpdate;
 import com.nontage.listeners.SlashCommandInteraction;
 import com.nontage.utils.SimpleYaml;
 import com.nontage.utils.SlashCommand;
+import com.nontage.utils.VoiceTimer;
 import com.nontage.voice.VoiceGuildManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -19,6 +20,7 @@ public class PrivateVoiceBot {
     public static SimpleYaml config;
     public static VoiceGuildManager manager;
     public static JDA jda;
+    public static VoiceTimer voiceTimer;
 
     public static void main(String[] args) {
         config = new SimpleYaml("PrivateVoiceBot", "config.yml");
@@ -37,9 +39,12 @@ public class PrivateVoiceBot {
             jda.getGuilds().forEach(guild -> {
                 manager.removeExceptionChannel(guild.getIdLong());
             });
+            voiceTimer = new VoiceTimer();
+            voiceTimer.start();
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Error: Config file not found or invalid token, please check your config.yml\nPath: " + config.getFilePath());
+            System.err.println("If the exception is not associated with config, please ignore this message.");
+            System.err.println("Error: Config file not found or invalid token or invalid values, please check your config.yml\nPath: " + config.getFilePath());
         }
     }
 }
