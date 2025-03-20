@@ -134,7 +134,7 @@ public class VoiceGuildManager {
             }
             category.getChannels().forEach(channel -> {
                 try {
-                    if (!config.getMap("privateVoiceChannelId", Long.class, Long.class).containsValue(channel.getIdLong())) {
+                    if (channel.getType().isAudio() && !config.getMap("privateVoiceChannelId", Long.class, Long.class).containsValue(channel.getIdLong())) {
                         channel.delete().queue();
                         System.out.println("Removed exception channel: " + channel.getName());
                     }

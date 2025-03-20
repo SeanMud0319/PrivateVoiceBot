@@ -1,6 +1,7 @@
 token: <your-bot-token>
 removeExceptionChannels: false
 commandMessageEphemeral: false
+defaultChannelVisibility: true
 privateVoiceCategoryId:
 privateVoiceChannelId:
 privateVoiceChannelName: "點我建立私人頻道"

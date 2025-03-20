@@ -44,6 +44,8 @@ removeExceptionChannels: false
 # Whether to remove all channels in the create category after bot startup. Use with caution
 commandMessageEphemeral: false
 # Whether command replies are ephemeral. If true, only the command sender can see the reply
+defaultChannelVisibility: true
+# Whether private voice channels are visible to everyone by default
 privateVoiceCategoryId:
 # Map of create category IDs. Do not manually modify this setting
 privateVoiceChannelId:
@@ -134,6 +136,8 @@ removeExceptionChannels: false
 # 是否在機器人啟動後刪除所有在建立類別的頻道。請謹慎使用此選項
 commandMessageEphemeral: false 
 # 指令回覆是否為僅個人可見。若為 true，則僅指令發送者可見
+defaultChannelVisibility: true
+# 私人語音頻道是否默認對所有人可見
 privateVoiceCategoryId:
 # 建立類別映射表。請勿手動修改此設定
 privateVoiceChannelId:

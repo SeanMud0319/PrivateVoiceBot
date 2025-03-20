@@ -22,7 +22,7 @@ public class SetUpCommand extends SlashCommand {
             return;
         }
         event.replyEmbeds(TextUtils.embed()
-                .setColor(Color.CYAN)
+                .setColor(Color.decode("#7AD3FF"))
                 .setTitle("PrivateVoiceBot 設定教學")
                 .setDescription("步驟：")
                 .addField("1. 設定私人語音建立頻道", "輸入 ` /voice setcreatechannel ` 來設定私人語音頻道。", false)

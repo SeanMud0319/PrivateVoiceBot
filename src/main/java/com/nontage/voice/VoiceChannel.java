@@ -11,6 +11,7 @@ import java.util.Set;
 import static com.nontage.PrivateVoiceBot.jda;
 import static com.nontage.PrivateVoiceBot.manager;
 import static com.nontage.PrivateVoiceBot.voiceTimer;
+import static com.nontage.PrivateVoiceBot.config;
 
 /**
  * Represents a voice channel in a Discord-like server.
@@ -40,7 +41,7 @@ public class VoiceChannel {
         this.owner = owner;
         this.name = name;
         this.discordChannel = discordChannel;
-        this.isPrivate = true;
+        this.isPrivate = config.getBoolean("defaultChannelVisibility");
         this.invitedUsers = new HashSet<>();
         voiceTimer.addChannel(guildId, this);
     }

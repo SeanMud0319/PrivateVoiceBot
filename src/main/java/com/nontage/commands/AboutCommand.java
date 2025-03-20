@@ -21,7 +21,7 @@ public class AboutCommand extends SlashCommand {
     @Override
     public void execute(Member sender, SlashCommandInteractionEvent event, String subCommand) {
         event.replyEmbeds(TextUtils.embed()
-                .setColor(Color.CYAN)
+                .setColor(Color.decode("#7AD3FF"))
                 .setTitle("PrivateVoiceBot Information")
                 .setDescription("PrivateVoiceBot is a Discord bot that lets users create private voice channels in their server, offering easy control through simple commands.")
                 .addField("Author", "Nontage", true)
