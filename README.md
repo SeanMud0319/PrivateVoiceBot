@@ -38,6 +38,7 @@ The built JAR file can be found in the `target/` directory.
 
 ## Configuration
 ```
+version: 1.0.0
 token: <your-bot-token>
 # Your bot token. Do not share this token
 removeExceptionChannels: false
@@ -131,6 +132,7 @@ mvn clean package
 
 ## 配置
 ```
+version: 1.0.0
 token: <your-bot-token>
 # 您的機器人令牌。請勿分享此令牌
 removeExceptionChannels: false
