@@ -26,6 +26,7 @@ public class VoiceChannel {
     private boolean isPrivate;
     private String name;
     private VoiceUser owner;
+    private int userLimit;
 
     /**
      * Creates a new public voice channel.
@@ -43,6 +44,7 @@ public class VoiceChannel {
         this.discordChannel = discordChannel;
         this.isPrivate = config.getBoolean("defaultChannelVisibility");
         this.invitedUsers = new HashSet<>();
+        this.userLimit = 0;
         voiceTimer.addChannel(guildId, this);
     }
 
@@ -158,6 +160,13 @@ public class VoiceChannel {
         }
     }
 
+    public void setUserLimit(int userLimit) {
+        this.userLimit = userLimit;
+        var discordChannel = manager.getDiscordVoiceChannelById(guildId, channelId);
+        if (discordChannel != null) {
+            discordChannel.getManager().setUserLimit(userLimit).queue();
+        }
+    }
 
     /**
      * @return The list of invited users for this channel.

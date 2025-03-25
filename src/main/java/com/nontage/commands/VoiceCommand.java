@@ -40,6 +40,8 @@ public class VoiceCommand extends SlashCommand {
                                 .addOption(OptionType.STRING, "name", "新名稱", true),
                         new SubcommandData(VoiceCommands.TRANSFER.getName(), VoiceCommands.TRANSFER.getDescription())
                                 .addOption(OptionType.USER, "user", "指定使用者", true),
+                        new SubcommandData(VoiceCommands.SET_LIMIT.getName(), VoiceCommands.SET_LIMIT.getDescription())
+                                .addOption(OptionType.INTEGER, "limit", "人數上限(0為不限制)", true),
 
                         new SubcommandData(VoiceCommands.RELOAD.getName(), VoiceCommands.RELOAD.getDescription()),
                         new SubcommandData(VoiceCommands.INFO.getName(), VoiceCommands.INFO.getDescription()),
@@ -288,6 +290,23 @@ public class VoiceCommand extends SlashCommand {
                     event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
                 });
             }
+            case SET_LIMIT -> {
+                int limit = Objects.requireNonNull(event.getOption("limit")).getAsInt();
+                int finalLimit = limit > 99 ? 99 : (Math.max(limit, 0));
+                senderUserOpt.ifPresentOrElse(voiceUser -> {
+                    if (noChannel(voiceUser, event)) {
+                        return;
+                    }
+                    voiceUser.getSelfVoiceChannel().setUserLimit(finalLimit);
+                    event.replyEmbeds(TextUtils.getGlobalEmbed()
+                            .setColor(Color.decode(config.getString("successColor")))
+                            .setTitle(config.getString("successTitle"))
+                            .setDescription(config.getString("commandLimitSuccess"))
+                            .build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
+                }, () -> {
+                    event.replyEmbeds(TextUtils.getNoVoiceChannelEmbed().build()).setEphemeral(config.getBoolean("commandMessageEphemeral")).queue();
+                });
+            }
             case TOGGLE_VISIBILITY -> {
                 senderUserOpt.ifPresentOrElse(voiceUser -> {
                     if (noChannel(voiceUser, event)) {
@@ -367,7 +386,8 @@ enum VoiceCommands {
     RENAME("rename", "重新命名您的私人語音頻道"),
     TRANSFER("transfer", "轉移私人語音頻道的所有權"),
     TOGGLE_VISIBILITY("togglevisibility", "切換私人語音頻道的可見性"),
-    CLOSE("close", "關閉您的私人語音頻道");
+    CLOSE("close", "關閉您的私人語音頻道"),
+    SET_LIMIT("setlimit", "更改私人語音頻道的人數上限");
 
     private final String name;
     private final String description;
