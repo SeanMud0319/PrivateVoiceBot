@@ -75,6 +75,9 @@ public class VoiceUser {
                     .queue(voiceChannel -> {
                         VoiceChannel newChannel = new VoiceChannel(voiceChannel.getIdLong(), this, channelName, voiceChannel);
                         manager.addChannel(guildId, newChannel);
+                        if (this.member.getVoiceState() != null && this.member.getVoiceState().inAudioChannel()) {
+                            voiceChannel.getGuild().moveVoiceMember(this.member, voiceChannel).queue();
+                        }
                         voiceChannel.getGuild().moveVoiceMember(this.member, voiceChannel).queue();
                         voiceChannel.getManager()
                                 .putMemberPermissionOverride(member.getIdLong(),
