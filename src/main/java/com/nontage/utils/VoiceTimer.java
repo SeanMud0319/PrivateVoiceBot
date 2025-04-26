@@ -7,8 +7,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.nontage.PrivateVoiceBot.manager;
-import static com.nontage.PrivateVoiceBot.config;
+import static com.nontage.PrivateVoiceBot.*;
 
 public class VoiceTimer {
     private final Timer timer;
@@ -23,6 +22,10 @@ public class VoiceTimer {
             @Override
             public void run() {
                 onTick();
+                if (System.currentTimeMillis() / 1000 % (30 * 60) == 0) {
+                    // ping the bot every 30 minutes
+                    jda.getSelfUser().getName();
+                }
             }
         }, 0, 1000);
     }
